@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { validatePhoneNumber } from "../../lib/whatsapp";
 
 const imageField = (name: string, title: string) =>
   defineField({ name, title, type: "image", description: "Upload a clear, relevant image for this section. Add alt text to describe it for accessibility.", options: { hotspot: true }, fields: [{ name: "alt", title: "Alt text", type: "string", description: "Describe the image briefly. Example: Wooden furniture in a warm living room." }] });
@@ -28,7 +29,8 @@ export const siteSettings = defineType({
       defineField({ name: "description", title: "Description", type: "text", description: "Briefly explain what the service includes.", rows: 3 }),
     ] })] }),
     defineField({ name: "contact", title: "Contact details", type: "object", fields: [
-      defineField({ name: "phone", title: "Phone", type: "string", description: "Public business phone number, including area or country code if appropriate." }),
+      defineField({ name: "phone", title: "Telephone number", type: "string", description: "Public business telephone number, including country code. Example: +27 82 123 4567. Also used for WhatsApp when no separate WhatsApp number is set.", validation: (rule) => rule.custom(validatePhoneNumber) }),
+      defineField({ name: "whatsappNumber", title: "WhatsApp number", type: "string", description: "Optional separate WhatsApp number, including country code. Leave blank to use the telephone number. Publish changes to update all enquiry buttons on the website.", validation: (rule) => rule.custom(validatePhoneNumber) }),
       defineField({ name: "email", title: "Email", type: "string", description: "Public business email address customers can use." }),
       defineField({ name: "address", title: "Address", type: "text", description: "Public showroom or business address. Use line breaks for readability.", rows: 3 }),
       defineField({ name: "hours", title: "Opening hours", type: "text", description: "Public opening hours. Example: Monday–Friday: 08:00–17:00\nSaturday: 09:00–13:00.", rows: 3 }),

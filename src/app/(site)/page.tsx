@@ -18,8 +18,8 @@ export default async function HomePage() {
     <div>
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-20 pt-8 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-16 lg:px-8 lg:pb-28 lg:pt-14">
         <div className="max-w-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{hero?.eyebrow || "Furniture for the way you live"}</p>
-          <h1 className="mt-5 max-w-lg font-display text-5xl leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">{hero?.title || "Pieces with presence, made to be lived with."}</h1>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{hero?.eyebrow}</p>
+          <h1 className="mt-5 max-w-lg font-display text-5xl leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">{hero?.title || siteSettings.brandName}</h1>
           <p className="mt-7 max-w-md text-base leading-7 text-muted-foreground">{hero?.description}</p>
           <div className="mt-9 flex flex-wrap items-center gap-5">
             <Link href="/products" className="inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85">{hero?.ctaLabel || "Explore the collection"}<ArrowRight className="size-4" /></Link>
@@ -29,7 +29,7 @@ export default async function HomePage() {
         <div className="relative aspect-[4/3] min-h-[360px] overflow-hidden bg-muted lg:min-h-[540px]">
           {optimizedImageUrl(hero?.imageUrl, 1600) ? (
             <Image src={optimizedImageUrl(hero?.imageUrl, 1600)!} alt={hero?.imageAlt || "Furniture from Hassan Furnitures"} fill priority sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" />
-          ) : <div className="grid h-full place-items-center text-sm text-muted-foreground">Add a hero image in Sanity Studio</div>}
+          ) : <div className="grid h-full place-items-center text-sm text-muted-foreground">Image coming soon</div>}
         </div>
       </section>
 
@@ -44,9 +44,9 @@ export default async function HomePage() {
           </div>
           {recentProducts.length ? (
             <div className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-              {recentProducts.map((product) => <ProductCard key={product._id} product={product} />)}
+              {recentProducts.map((product) => <ProductCard key={product._id} product={product} contact={siteSettings.contact} />)}
             </div>
-          ) : <p className="mt-10 border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground">New furniture will appear here once products are published.</p>}
+          ) : <p className="mt-10 border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground">No furniture is available yet. Please check back soon.</p>}
         </div>
       </section>
 
@@ -56,8 +56,8 @@ export default async function HomePage() {
           <Link href="/products" className="hidden items-center gap-2 text-sm font-semibold sm:inline-flex">All furniture <ArrowUpRight className="size-4" /></Link>
         </div>
         <div className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category, index) => {
-            const image = optimizedImageUrl(category.imageUrl || recentProducts[index % Math.max(recentProducts.length, 1)]?.imageUrl, 900);
+          {categories.map((category) => {
+            const image = optimizedImageUrl(category.imageUrl, 900);
             return <Link key={category._id} href={`/products?category=${category.slug}`} className="group relative flex min-h-56 flex-col justify-end overflow-hidden bg-background p-6">
               {image && <Image src={image} alt={category.imageAlt || category.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-85" />}
               <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/15 to-transparent" />

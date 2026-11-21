@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { getSiteSettings } from "@/sanity/lib/queries";
-import { getWhatsAppHref } from "@/lib/whatsapp";
+import { getTelephoneHref, getWhatsAppHref } from "@/lib/whatsapp";
 
 export const metadata = {
   title: "Contact Hassan Furnitures",
@@ -12,8 +12,10 @@ export const metadata = {
 export default async function ContactsPage() {
   const settings = await getSiteSettings();
   const contact = settings.contact;
+  const telephoneHref = getTelephoneHref(contact?.phone);
   const whatsappHref = getWhatsAppHref(
     `Hello ${settings.brandName}, I would like to make an inquiry.`,
+    contact,
   );
   return (
     <div className="min-h-screen">
@@ -29,14 +31,14 @@ export default async function ContactsPage() {
             Tell us what you are looking for and our team will help with product
             information, availability, or a custom furniture enquiry.
           </p>
-          <a
+          {whatsappHref && <a
             href={whatsappHref}
             target="_blank"
             rel="noreferrer"
             className="mt-9 inline-flex items-center gap-2 bg-[#25D366] px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-[#25D366]/85"
           >
             <MessageCircle className="size-4" /> Chat on WhatsApp
-          </a>
+          </a>}
         </div>
       </section>
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[0.75fr_1.25fr] lg:px-8 lg:py-24">
@@ -48,13 +50,13 @@ export default async function ContactsPage() {
             We&apos;re here to help.
           </h2>
           <div className="mt-8 grid gap-6 text-sm">
-            {contact?.phone && (
+            {telephoneHref && (
               <a
-                href={`tel:${contact.phone}`}
+                href={telephoneHref}
                 className="flex items-start gap-3 hover:underline"
               >
                 <Phone className="mt-0.5 size-5 shrink-0" />
-                <span>{contact.phone}</span>
+                <span>{contact?.phone}</span>
               </a>
             )}
             {contact?.email && (
@@ -82,11 +84,9 @@ export default async function ContactsPage() {
                 </p>
               </div>
             )}
-            {!contact?.phone && !contact?.email && !contact?.address && (
+            {!telephoneHref && !whatsappHref && !contact?.email && !contact?.address && (
               <p className="max-w-sm text-sm leading-6 text-muted-foreground">
-                Contact details will appear here once they are added to Site
-                settings in Sanity Studio. WhatsApp is the fastest way to reach
-                the team.
+                Contact details are not available yet. Please check back soon.
               </p>
             )}
           </div>

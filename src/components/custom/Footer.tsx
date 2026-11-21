@@ -2,18 +2,18 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Category, SiteSettings } from "@/sanity/types";
 
-export function Footer({ siteSettings, categories }: { siteSettings?: SiteSettings; categories?: Category[] }) {
-  const brandName = siteSettings?.brandName || "Hassan Furnitures";
-  const contact = siteSettings?.contact;
+export function Footer({ siteSettings, categories }: { siteSettings: SiteSettings; categories?: Category[] }) {
+  const brandName = siteSettings.brandName;
+  const contact = siteSettings.contact;
 
   return (
     <footer className="border-t border-border bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.3fr_0.8fr_0.8fr] lg:px-8">
         <div>
           <p className="font-display text-3xl tracking-[-0.04em]">{brandName}</p>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-primary-foreground/65">
-            {siteSettings?.tagline || "Furniture for the way you live."}
-          </p>
+          {siteSettings.tagline && <p className="mt-4 max-w-sm text-sm leading-6 text-primary-foreground/65">
+            {siteSettings.tagline}
+          </p>}
           {contact?.email && <a href={`mailto:${contact.email}`} className="mt-6 inline-block text-sm underline-offset-4 hover:underline">{contact.email}</a>}
         </div>
         <div>

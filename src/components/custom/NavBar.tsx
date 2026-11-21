@@ -5,12 +5,13 @@ import { Menu, MessageCircle, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWhatsAppHref } from "@/lib/whatsapp";
-import type { Category } from "@/sanity/types";
+import type { Category, ContactDetails } from "@/sanity/types";
 
 type NavBarProps = {
   brandName: string;
   announcement?: string;
   categories: Category[];
+  contact?: ContactDetails;
 };
 
 const navItems = [
@@ -33,10 +34,10 @@ function navLinkClass(isActive: boolean, mobile = false) {
   ].join(" ");
 }
 
-export function NavBar({ brandName, announcement, categories }: NavBarProps) {
+export function NavBar({ brandName, announcement, categories, contact }: NavBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname() || "/";
-  const whatsappHref = getWhatsAppHref(`Hello ${brandName}, I would like to make an order.`);
+  const whatsappHref = getWhatsAppHref(`Hello ${brandName}, I would like to make an order.`, contact);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -69,11 +70,11 @@ export function NavBar({ brandName, announcement, categories }: NavBarProps) {
             })}
           </nav>
 
-          <a href={whatsappHref} target="_blank" rel="noreferrer" className="text-[#25D366] inline-flex items-center gap-2 border border-[#25D366] px-3 py-2 text-md font-semibold transition-colors hover:bg-[#25D366] hover:text-background sm:px-4">
+          {whatsappHref && <a href={whatsappHref} target="_blank" rel="noreferrer" className="text-[#25D366] inline-flex items-center gap-2 border border-[#25D366] px-3 py-2 text-md font-semibold transition-colors hover:bg-[#25D366] hover:text-background sm:px-4">
             <MessageCircle className="size-4" />
             <span className="hidden sm:inline">WhatsApp us</span>
             <span className="sm:hidden">Chat</span>
-          </a>
+          </a>}
         </div>
       </header>
 

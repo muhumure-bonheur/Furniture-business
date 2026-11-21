@@ -42,6 +42,14 @@ export type Service = {
   description?: string;
 };
 
+export type ContactDetails = {
+  phone?: string;
+  whatsappNumber?: string;
+  email?: string;
+  address?: string;
+  hours?: string;
+};
+
 export type SiteSettings = {
   brandName: string;
   tagline?: string;
@@ -61,11 +69,6 @@ export type SiteSettings = {
     imageAlt?: string;
   };
   services?: Service[];
-  contact?: {
-    phone?: string;
-    email?: string;
-    address?: string;
-    hours?: string;
-  };
+  contact?: ContactDetails;
   socialLinks?: Array<{ _key?: string; label: string; url: string }>;
 };

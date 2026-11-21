@@ -3,10 +3,10 @@ import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { ProductImageCarousel } from "@/components/custom/ProductImageCarousel";
 import { Reveal } from "@/components/custom/Reveal";
 import { getProductInquiry, getWhatsAppHref } from "@/lib/whatsapp";
-import type { Product } from "@/sanity/types";
+import type { ContactDetails, Product } from "@/sanity/types";
 
-export function ProductCard({ product }: { product: Product }) {
-  const inquiryHref = getWhatsAppHref(getProductInquiry(product.name, product.priceDisplay));
+export function ProductCard({ product, contact }: { product: Product; contact?: ContactDetails }) {
+  const inquiryHref = getWhatsAppHref(getProductInquiry(product.name, product.priceDisplay), contact);
 
   return (
     <Reveal className="h-full">
@@ -39,7 +39,7 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{product.description}</p>
         <div className="mt-4 flex items-center justify-between gap-3">
           <span className="text-sm font-medium text-foreground">{product.priceDisplay || "Price on request"}</span>
-          <a
+          {inquiryHref && <a
             href={inquiryHref}
             target="_blank"
             rel="noreferrer"
@@ -47,7 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
           >
             <MessageCircle className="size-3.5" />
             Chat
-          </a>
+          </a>}
         </div>
       </div>
       </article>

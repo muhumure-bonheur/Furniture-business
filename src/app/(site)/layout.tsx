@@ -15,6 +15,7 @@ export default async function SiteLayout({
         brandName={siteSettings.brandName}
         announcement={siteSettings.announcement}
         categories={categories}
+        contact={siteSettings.contact}
       />
 
       <main>{children}</main>
